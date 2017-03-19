@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  duplicity:
+    build: .
+    volumes:
+      - ~/.gnupg:/root/.gnupg:ro
+      - ~/my-backups:/backups
+      - ~/my-data:/data:ro
+    environment:
+      GPG_KEY_ID: 2CBD492E
+      PASSPHRASE: Correct.Horse.Battery.Staple
+      CLEANUP_COMMAND: remove-older-than 5m
+      CRON_SCHEDULE: "* * * * *"
+      VERIFY_CRON_SCHEDULE: "* * * * *"
