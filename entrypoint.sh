@@ -7,6 +7,11 @@ if [ "$1" == "bash" ]; then
     exit 0
 fi
 
+# If key id is provied add arg
+if [ -e "$GPG_KEY_ID" ]; then
+    OPT_ARGUMENTS="$OPT_ARGUMENTS --encrypt-sign-key=\"$GPG_KEY_ID\""
+fi
+
 if [ "$SKIP_ON_START" != "true" ]; then
     /backup.sh
 fi

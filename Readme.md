@@ -39,5 +39,5 @@ PATH_TO_BACKUP="/"
 Mount all volumes from your existing container with `--volumes-from` and then back up by providing the paths to those volumes. If there are more than one volumes, you'll want to use the above tip for mulitple backup sources
 
 ### To Do
- - [ ] Some easy way to trigger restoration
+ - [x] Some easy way to trigger restoration (can now exec /restore.sh)
  - [ ] Automatic restoration if there is no source data

@@ -22,8 +22,9 @@ ENV PASSPHRASE="Correct.Horse.Battery.Staple"
 ENV CRON_SCHEDULE=""
 ENV VERIFY_CRON_SCHEDULE=""
 
-ADD entrypoint.sh /
 ADD backup.sh /
+ADD entrypoint.sh /
+ADD restore.sh /
 ADD verify.sh /
 
 ENTRYPOINT [ "/entrypoint.sh" ]
