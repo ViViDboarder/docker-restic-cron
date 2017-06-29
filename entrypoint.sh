@@ -25,7 +25,7 @@ if [ -n "$CRON_SCHEDULE" ]; then
     echo "Backups scheduled as $CRON_SCHEDULE"
 
     if [ -n "$VERIFY_CRON_SCHEDULE" ]; then
-        echo "$VERIFY_CRON_SCHEDULE source /env.sh && duplicity verify $BACKUP_DEST $PATH_TO_BACKUP" >> /crontab.conf
+        echo "$VERIFY_CRON_SCHEDULE source /env.sh && /verify.sh 2>> /cron.log" >> /crontab.conf
         echo "Verify scheduled as $VERIFY_CRON_SCHEDULE"
     fi
 

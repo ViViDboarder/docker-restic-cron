@@ -1,13 +1,14 @@
-FROM ubuntu:xenial
+FROM resin/rpi-raspbian:jessie
 MAINTAINER ViViDboarder <vividboarder@gmail.com>
 
+RUN [ "cross-build-start" ]
+
 RUN apt-get update \
-        && apt-get install -y software-properties-common python-software-properties \
-        && add-apt-repository ppa:duplicity-team/ppa \
-        && apt-get update \
         && apt-get install -y duplicity python-setuptools \
         python-boto python-swiftclient python-pexpect openssh-client \
         && rm -rf /var/apt/lists/*
+
+RUN [ "cross-build-end" ]
 
 VOLUME "/root/.cache/duplicity"
 VOLUME "/backups"
@@ -23,5 +24,6 @@ ENV VERIFY_CRON_SCHEDULE=""
 
 ADD entrypoint.sh /
 ADD backup.sh /
+ADD verify.sh /
 
 ENTRYPOINT [ "/entrypoint.sh" ]

@@ -1,2 +1,5 @@
+Dockerfile.*
+Makefile
 Readme.md
 docker-compose.yaml
+test.sh
