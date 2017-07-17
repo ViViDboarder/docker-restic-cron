@@ -19,3 +19,11 @@ test-arm: build-arm
 	./test.sh $(DOCKER_TAG) raspbian
 
 test-all: test-x86 test-arm
+
+shell-x86: build-x86
+	docker run --rm -it $(DOCKER_TAG):ubuntu bash
+
+shell-arm: build-arm
+	docker run --rm -it $(DOCKER_TAG):raspbian bash
+
+shell: shell-x86
