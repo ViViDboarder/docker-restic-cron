@@ -1,15 +1,19 @@
 #! /bin/bash
 
-export OPT_ARGUMENTS="$@"
-
+# If first arg is bash, we'll just execute directly
 if [ "$1" == "bash" ]; then
     exec "$@"
     exit 0
 fi
 
+# If no env variable set, get from command line
+if [ "$OPT_ARGUMENTS" == "" ]; then
+    export OPT_ARGUMENTS="$@"
+fi
+
 # If key id is provied add arg
 if [ -e "$GPG_KEY_ID" ]; then
-    OPT_ARGUMENTS="$OPT_ARGUMENTS --encrypt-sign-key=\"$GPG_KEY_ID\""
+    export OPT_ARGUMENTS="$OPT_ARGUMENTS --encrypt-sign-key=\"$GPG_KEY_ID\""
 fi
 
 if [ "$SKIP_ON_START" != "true" ]; then
