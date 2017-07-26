@@ -2,7 +2,6 @@
 set -e
 
 duplicity \
-    --allow-source-mismatch \
     --asynchronous-upload \
     --log-file /root/duplicity.log \
     --name $BACKUP_NAME \
