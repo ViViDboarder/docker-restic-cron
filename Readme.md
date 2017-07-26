@@ -13,7 +13,7 @@ Mount any directories you'd like to back up as a volume and run
 |BACKUP_NAME|backup|What the name for the backup should be. If using a single store for multiple backups, make sure this is unique|
 |CLEANUP_COMMAND| |An optional duplicity command to execute after backups to clean older ones out (eg. "remove-all-but-n-full 2")|
 |CRON_SCHEDULE| |If you want to backup on a schedule, provide it here. By default we just backup once and exit|
-|FTP_PASSWORD| |Required if using FTP for backups|
+|FTP_PASSWORD| |Used to provide passwords for some backends. May not work without an attached TTY|
 |GPG_KEY_ID| |The ID of the key you wish to use. See [Encryption](#encryption) section below|
 |OPT_ARGUMENTS| |Any additional arguments to provide to the duplicity backup command. These can also be provided as additional arguments via the command line|
 |PASSPHRASE|Correct.Horse.Battery.Staple|Passphrase to use for GPG|
@@ -27,6 +27,12 @@ Add a ro mount to your `~/.gnupg` directory and then provide the `GPG_KEY_ID` as
 Need to generate a key? Install `gnupg` and run `gnupg --gen-key`
 
 ## Tips
+
+### Missing dependencies?
+Please file a ticket! Duplicity supports a ton of backends and I haven't had a chance to validate that all dependencies are present in the image. If something is missing, let me know and I'll add it
+
+### Getting complains about no terminal for askpass?
+Instead of using `FTP_PASSWORD`, add the password to the endpoint url
 
 ### Backing up more than one source directory
 Duplicity only accepts one target, however you can refine that selection with `--exclude` and `--include` arguments. The below example shows how this can be used to select multiple backup sources
