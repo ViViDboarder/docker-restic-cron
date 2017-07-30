@@ -33,6 +33,11 @@ if [ -n "$CRON_SCHEDULE" ]; then
     echo "$CRON_SCHEDULE source /env.sh && /backup.sh 2>> /cron.log" >> /crontab.conf
     echo "Backups scheduled as $CRON_SCHEDULE"
 
+    if [ -n "$FULL_CRON_SCHEDULE" ]; then
+        echo "$FULL_CRON_SCHEDULE source /env.sh && /backup.sh full 2>> /cron.log" >> /crontab.conf
+        echo "Full backup scheduled as $VERIFY_CRON_SCHEDULE"
+    fi
+
     if [ -n "$VERIFY_CRON_SCHEDULE" ]; then
         echo "$VERIFY_CRON_SCHEDULE source /env.sh && /verify.sh 2>> /cron.log" >> /crontab.conf
         echo "Verify scheduled as $VERIFY_CRON_SCHEDULE"

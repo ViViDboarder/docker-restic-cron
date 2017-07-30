@@ -12,8 +12,9 @@ Mount any directories you'd like to back up as a volume and run
 |BACKUP_DEST|file:///backups|Destination to store backups (See [duplicity documenation](http://duplicity.nongnu.org/duplicity.1.html#sect7))|
 |BACKUP_NAME|backup|What the name for the backup should be. If using a single store for multiple backups, make sure this is unique|
 |CLEANUP_COMMAND| |An optional duplicity command to execute after backups to clean older ones out (eg. "remove-all-but-n-full 2")|
-|CRON_SCHEDULE| |If you want to backup on a schedule, provide it here. By default we just backup once and exit|
+|CRON_SCHEDULE| |If you want to periodic incremental backups on a schedule, provide it here. By default we just backup once and exit|
 |FTP_PASSWORD| |Used to provide passwords for some backends. May not work without an attached TTY|
+|FULL_CRON_SCHEDULE| |If you want to periodic full backups on a schedule, provide it here. This requires an incremental cron schedule too.|
 |GPG_KEY_ID| |The ID of the key you wish to use. See [Encryption](#encryption) section below|
 |OPT_ARGUMENTS| |Any additional arguments to provide to the duplicity backup command. These can also be provided as additional arguments via the command line|
 |PASSPHRASE|Correct.Horse.Battery.Staple|Passphrase to use for GPG|

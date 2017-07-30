@@ -2,6 +2,7 @@
 set -e
 
 duplicity \
+    $1 \
     --asynchronous-upload \
     --log-file /root/duplicity.log \
     --name $BACKUP_NAME \

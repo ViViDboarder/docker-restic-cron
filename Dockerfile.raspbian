@@ -20,6 +20,7 @@ ENV PASSPHRASE="Correct.Horse.Battery.Staple"
 
 # Cron schedules
 ENV CRON_SCHEDULE=""
+ENV FULL_CRON_SCHEDULE=""
 ENV VERIFY_CRON_SCHEDULE=""
 
 ADD backup.sh /

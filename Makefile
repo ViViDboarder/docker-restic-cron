@@ -1,8 +1,10 @@
-.PHONY: build-x86 build-arm build-all
+.PHONY: build-x86 build-arm build-all test
 
 DOCKER_TAG ?= docker-duplicity-cron
 
 default: build-x86
+
+test: test-x86
 
 build-x86:
 	docker build -f ./Dockerfile.ubuntu -t $(DOCKER_TAG):ubuntu .
