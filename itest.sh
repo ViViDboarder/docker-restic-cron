@@ -20,3 +20,9 @@ echo "Restore backup..."
 
 echo "Verify backup..."
 /verify.sh
+
+echo "Verify incorrect passphrase fails..."
+export PASSPHRASE=Incorrect.Mule.Solar.Paperclip
+
+echo "Fail to restore backup..."
+/restore.sh && exit 1 || echo "OK"
