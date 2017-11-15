@@ -2,4 +2,4 @@ sudo: required
 services: docker
 
 script:
-  - make test
+  - make test-all
