@@ -6,7 +6,10 @@ RUN apt-get update \
         && add-apt-repository ppa:duplicity-team/ppa \
         && apt-get update \
         && apt-get install -y duplicity python-setuptools ncftp \
-        python-boto python-swiftclient python-pexpect openssh-client \
+        python-swiftclient python-pip python-pexpect openssh-client \
+        && pip install boto \
+        && apt-get autoremove -y python-pip \
+        && apt-get clean \
         && rm -rf /var/apt/lists/*
 
 VOLUME "/root/.cache/duplicity"
