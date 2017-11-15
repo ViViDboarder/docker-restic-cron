@@ -1,5 +1,7 @@
 # Duplicity Backup
 
+[![Build Status](https://travis-ci.org/ViViDboarder/docker-duplicity-cron.svg?branch=master)](https://travis-ci.org/ViViDboarder/docker-duplicity-cron)
+
 ## Instructions
 Mount any directories you'd like to back up as a volume and run
 
