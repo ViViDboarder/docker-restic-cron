@@ -3,13 +3,23 @@ MAINTAINER ViViDboarder <vividboarder@gmail.com>
 
 RUN apt-get update \
         && apt-get install -y --no-install-recommends \
-        software-properties-common python-software-properties \
+            software-properties-common python-software-properties \
         && add-apt-repository ppa:duplicity-team/ppa \
         && apt-get update \
         && apt-get install -y --no-install-recommends \
-        duplicity python-setuptools ncftp \
-        python-swiftclient python-pip python-pexpect openssh-client \
-        && pip install boto \
+            duplicity python-setuptools python-pexpect openssh-client \
+            lftp \
+            ncftp \
+            python-cloudfiles \
+            python-gdata \
+            python-oauthlib \
+            python-paramiko \
+            python-swiftclient \
+            python-urllib3 \
+            rsync \
+            tahoe-lafs \
+            python-pip \
+        && pip install -U boto  \
         && apt-get autoremove -y python-pip \
         && apt-get clean \
         && rm -rf /var/apt/lists/*
