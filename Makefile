@@ -19,14 +19,25 @@ build-all: build-x86 build-arm
 
 .PHONY: test-x86
 test-x86: build-x86
-	./test.sh $(DOCKER_TAG) ubuntu
+	./test.sh $(DOCKER_TAG):ubuntu
 
 .PHONY: test-arm
 test-arm: build-arm
-	./test.sh $(DOCKER_TAG) raspbian
+	./test.sh $(DOCKER_TAG):raspbian
 
 .PHONY: test-all
 test-all: test-x86 test-arm
+
+.PHONY: test-s3-x86
+test-s3-x86:
+	./test-s3.sh ubuntu
+
+.PHONY: test-s3-arm
+test-s3-arm:
+	./test-s3.sh raspbian
+
+.PHONY: test-s3-all
+test-s3-all: test-s3-x86 test-s3-arm
 
 .PHONY: shell-x86
 shell-x86: build-x86
@@ -38,3 +49,7 @@ shell-arm: build-arm
 
 .PHONY: shell
 shell: shell-x86
+
+.PHONY: clean
+clean:
+	docker-compose -f docker-compose-test-s3.yml down -v

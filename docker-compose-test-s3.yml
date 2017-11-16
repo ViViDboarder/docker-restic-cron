@@ -1,0 +1,29 @@
+version: '2'
+services:
+  duplicity:
+    build:
+      context: .
+      dockerfile: Dockerfile.${DOCKER_BASE}
+    entrypoint: "bash"
+    command: ["/itest.sh"]
+    hostname: itest
+    environment:
+      SKIP_ON_START: 'true'
+      OPT_ARGUMENTS: '--s3-unencrypted-connection'
+      BACKUP_DEST: s3://minio:9000/duplicity
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: SUPER_SECRET_ACCESS_KEY
+      AWS_SECRET_ACCESS_KEY: SUPER_SECRET_SECRET_KEY
+    volumes:
+      - "./itest.sh:/itest.sh"
+    links:
+      - minio
+  minio:
+    image: minio/minio
+    command: server /data
+    hostname: minio
+    expose:
+      - "9000"
+    environment:
+      MINIO_ACCESS_KEY: SUPER_SECRET_ACCESS_KEY
+      MINIO_SECRET_KEY: SUPER_SECRET_SECRET_KEY

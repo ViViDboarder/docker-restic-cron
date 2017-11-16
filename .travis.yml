@@ -3,4 +3,5 @@ services: docker
 
 script:
   - make build-all
-  - make test
+  - make test-x86
+  - make test-s3-x86
