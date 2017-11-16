@@ -1,7 +1,7 @@
 FROM resin/rpi-raspbian:jessie
 MAINTAINER ViViDboarder <vividboarder@gmail.com>
 
-RUN [ "cross-build-start" ]
+RUN cross-build-start || true
 
 RUN apt-get update \
         && apt-get install -y --no-install-recommends \
@@ -22,7 +22,7 @@ RUN apt-get update \
             python-swiftclient \
         && rm -rf /var/apt/lists/*
 
-RUN [ "cross-build-end" ]
+RUN cross-build-end || true
 
 VOLUME "/root/.cache/duplicity"
 VOLUME "/backups"
