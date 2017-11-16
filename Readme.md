@@ -47,6 +47,8 @@ PATH_TO_BACKUP="/"
 ### Backing up from another container
 Mount all volumes from your existing container with `--volumes-from` and then back up by providing the paths to those volumes. If there are more than one volumes, you'll want to use the above tip for mulitple backup sources
 
+### Restoring a backup
+On your running container, execute `/restore.sh`. That should be that! Eg. `docker exec my_backup_container /restore.sh`
+
 ### To Do
- - [x] Some easy way to trigger restoration (can now exec /restore.sh)
  - [ ] Automatic restoration if there is no source data
