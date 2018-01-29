@@ -5,17 +5,21 @@ RUN [ "cross-build-start" ]
 
 RUN apt-get update \
         && apt-get install -y --no-install-recommends \
-            duplicity python-setuptools cron python-pexpect openssh-client \
+            cron \
+            duplicity \
             lftp \
             ncftp \
+            openssh-client \
             python-cloudfiles \
             python-gdata \
             python-oauthlib \
             python-paramiko \
+            python-pexpect \
+            python-pip \
+            python-setuptools \
             python-urllib3 \
             rsync \
             tahoe-lafs \
-            python-pip \
         && pip install -U boto  \
         && apt-get remove -y python-pip \
         && apt-get install -y --no-install-recommends \

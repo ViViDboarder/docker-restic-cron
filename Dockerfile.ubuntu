@@ -7,18 +7,22 @@ RUN apt-get update \
         && add-apt-repository ppa:duplicity-team/ppa \
         && apt-get update \
         && apt-get install -y --no-install-recommends \
-            duplicity python-setuptools python-pexpect openssh-client \
+            cron \
+            duplicity \
             lftp \
             ncftp \
+            openssh-client \
             python-cloudfiles \
             python-gdata \
             python-oauthlib \
             python-paramiko \
+            python-pexpect \
+            python-pip \
+            python-setuptools \
             python-swiftclient \
             python-urllib3 \
             rsync \
             tahoe-lafs \
-            python-pip \
         && pip install -U boto  \
         && apt-get autoremove -y python-pip \
         && apt-get clean \

@@ -3,6 +3,10 @@ set -e
 
 echo "Performing backup tests"
 
+echo "Verify cron and crontab exist"
+type cron
+type crontab
+
 echo "Create test data..."
 mkdir -p /data && echo Test > /data/test.txt
 
