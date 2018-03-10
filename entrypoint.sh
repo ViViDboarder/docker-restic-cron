@@ -16,6 +16,12 @@ if [ -e "$GPG_KEY_ID" ]; then
     export OPT_ARGUMENTS="$OPT_ARGUMENTS --encrypt-sign-key=\"$GPG_KEY_ID\""
 fi
 
+# If set to restore on start, restore if the data volume is empty
+if [ "$RESTORE_ON_EMPTY_START" == "true" -a -z "$(ls -A $PATH_TO_BACKUP)" ]; then
+    /restore.sh
+fi
+
+# Unless explicitly skipping, take a backup on startup
 if [ "$SKIP_ON_START" != "true" ]; then
     /backup.sh
 fi

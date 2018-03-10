@@ -21,6 +21,7 @@ Mount any directories you'd like to back up as a volume and run
 |OPT_ARGUMENTS| |Any additional arguments to provide to the duplicity backup command. These can also be provided as additional arguments via the command line|
 |PASSPHRASE|Correct.Horse.Battery.Staple|Passphrase to use for GPG|
 |PATH_TO_BACKUP|/data|The path to the directory you wish to backup. If you want to backup multiple, see the [tip below](#backing-up-more-than-one-source-directory)|
+|RESTORE_ON_EMPTY_START| |Set this to "true" and if the `$PATH_TO_BACKUP` is empty, it will restore the latest backup. This can be used for auto recovery from lost data|
 |SKIP_ON_START| |Skips backup on start if set to "true"|
 |VERIFY_CRON_SCHEDULE| |If you want to verify your backups on a schedule, provide it here|
 
