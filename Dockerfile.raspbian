@@ -20,7 +20,7 @@ RUN apt-get update \
             python-urllib3 \
             rsync \
             tahoe-lafs \
-        && pip install -U boto  \
+        && pip install -U boto b2 \
         && apt-get remove -y python-pip \
         && apt-get install -y --no-install-recommends \
             python-swiftclient \

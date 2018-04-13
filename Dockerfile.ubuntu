@@ -23,7 +23,7 @@ RUN apt-get update \
             python-urllib3 \
             rsync \
             tahoe-lafs \
-        && pip install -U boto  \
+        && pip install -U boto b2 \
         && apt-get autoremove -y python-pip \
         && apt-get clean \
         && rm -rf /var/apt/lists/*
