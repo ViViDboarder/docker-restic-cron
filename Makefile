@@ -19,22 +19,22 @@ build-all: build-x86 build-arm
 
 .PHONY: test-x86
 test-x86: build-x86
-	./test.sh $(DOCKER_TAG):ubuntu
+	cd tests && ./test.sh $(DOCKER_TAG):ubuntu
 
 .PHONY: test-arm
 test-arm: build-arm
-	./test.sh $(DOCKER_TAG):raspbian
+	cd tests && .test.sh $(DOCKER_TAG):raspbian
 
 .PHONY: test-all
 test-all: test-x86 test-arm
 
 .PHONY: test-s3-x86
 test-s3-x86:
-	./test-s3.sh ubuntu
+	cd tests && ./test-s3.sh ubuntu
 
 .PHONY: test-s3-arm
 test-s3-arm:
-	./test-s3.sh raspbian
+	cd tests && ./test-s3.sh raspbian
 
 .PHONY: test-s3-all
 test-s3-all: test-s3-x86 test-s3-arm

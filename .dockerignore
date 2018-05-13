@@ -1,8 +1,6 @@
+.travis.yml
 Dockerfile.*
 Makefile
 Readme.md
 docker-compose.yaml
-docker-compose-test-s3.yml
-test.sh
-itest.sh
-test-s3.sh
+tests/

@@ -2,12 +2,13 @@ version: '2'
 services:
   duplicity:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.${DOCKER_BASE}
     entrypoint: "bash"
-    command: ["/itest.sh"]
+    command: ["/test.sh"]
     hostname: itest
     environment:
+      IN_CONTAINER: 'true'
       SKIP_ON_START: 'true'
       OPT_ARGUMENTS: '--s3-unencrypted-connection'
       BACKUP_DEST: s3://minio:9000/duplicity
@@ -15,7 +16,7 @@ services:
       AWS_ACCESS_KEY_ID: SUPER_SECRET_ACCESS_KEY
       AWS_SECRET_ACCESS_KEY: SUPER_SECRET_SECRET_KEY
     volumes:
-      - "./itest.sh:/itest.sh"
+      - "./test.sh:/test.sh"
     links:
       - minio
   minio:
