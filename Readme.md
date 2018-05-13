@@ -15,6 +15,7 @@ Mount any directories you'd like to back up as a volume and run
 |BACKUP_NAME|backup|What the name for the backup should be. If using a single store for multiple backups, make sure this is unique|
 |CLEANUP_COMMAND| |An optional duplicity command to execute after backups to clean older ones out (eg. "remove-all-but-n-full 2")|
 |CRON_SCHEDULE| |If you want to periodic incremental backups on a schedule, provide it here. By default we just backup once and exit|
+|FLOCK_WAIT|60|Seconds to wait for a lock before skipping a backup|
 |FTP_PASSWORD| |Used to provide passwords for some backends. May not work without an attached TTY|
 |FULL_CRON_SCHEDULE| |If you want to periodic full backups on a schedule, provide it here. This requires an incremental cron schedule too.|
 |GPG_KEY_ID| |The ID of the key you wish to use. See [Encryption](#encryption) section below|

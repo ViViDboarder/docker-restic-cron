@@ -28,13 +28,15 @@ RUN apt-get update \
         && apt-get clean \
         && rm -rf /var/apt/lists/*
 
-VOLUME "/root/.cache/duplicity"
-VOLUME "/backups"
+VOLUME /root/.cache/duplicity
+VOLUME /backups
+VOLUME /var/lock/duplicity
 
 ENV BACKUP_DEST="file:///backups"
 ENV BACKUP_NAME="backup"
 ENV PATH_TO_BACKUP="/data"
 ENV PASSPHRASE="Correct.Horse.Battery.Staple"
+ENV FLOCK_WAIT=60
 
 # Cron schedules
 ENV CRON_SCHEDULE=""
