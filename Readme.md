@@ -17,9 +17,9 @@ Mount any directories you'd like to back up as a volume and run
 |CRON_SCHEDULE| |If you want to periodic incremental backups on a schedule, provide it here. By default we just backup once and exit|
 |FLOCK_WAIT|60|Seconds to wait for a lock before skipping a backup|
 |FTP_PASSWORD| |Used to provide passwords for some backends. May not work without an attached TTY|
-|FULL_CRON_SCHEDULE| |If you want to periodic full backups on a schedule, provide it here. This requires an incremental cron schedule too.|
+|FULL_CRON_SCHEDULE| |If you want to periodic full backups on a schedule, provide it here. This requires an incremental cron schedule too|
 |GPG_KEY_ID| |The ID of the key you wish to use. See [Encryption](#encryption) section below|
-|OPT_ARGUMENTS| |Any additional arguments to provide to the duplicity backup command. These can also be provided as additional arguments via the command line|
+|OPT_ARGUMENTS| |Any additional arguments to provide to the duplicity backup command|
 |PASSPHRASE|Correct.Horse.Battery.Staple|Passphrase to use for GPG|
 |PATH_TO_BACKUP|/data|The path to the directory you wish to backup. If you want to backup multiple, see the [tip below](#backing-up-more-than-one-source-directory)|
 |RESTORE_ON_EMPTY_START| |Set this to "true" and if the `$PATH_TO_BACKUP` is empty, it will restore the latest backup. This can be used for auto recovery from lost data|
@@ -27,7 +27,7 @@ Mount any directories you'd like to back up as a volume and run
 |VERIFY_CRON_SCHEDULE| |If you want to verify your backups on a schedule, provide it here|
 
 ## Encryption
-Add a ro mount to your `~/.gnupg` directory and then provide the `GPG_KEY_ID` as an environment variable. The key will be used to sign and encrypt your files before sending to the backup destination.
+By default Duplicity will use a symettric encryption using just your passphrase. If you wish to use a GPG key, you can add a ro mount to your `~/.gnupg` directory and then provide the `GPG_KEY_ID` as an environment variable. The key will be used to sign and encrypt your files before sending to the backup destination.
 
 Need to generate a key? Install `gnupg` and run `gnupg --gen-key`
 

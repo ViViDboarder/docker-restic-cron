@@ -1,10 +1,12 @@
 version: '2'
 services:
   duplicity:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.ubuntu
     volumes:
-      - ~/my-backups:/backups
-      - ~/my-data:/data:ro
+      - ./my-backups:/backups
+      - ./my-data:/data:ro
     environment:
       PASSPHRASE: Correct.Horse.Battery.Staple
       CLEANUP_COMMAND: remove-older-than 5m

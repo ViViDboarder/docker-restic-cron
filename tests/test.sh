@@ -45,7 +45,7 @@ else
     test -f /data/test.txt && exit 1 || echo "Gone"
 
     echo "Simulate a restart with RESTORE_ON_EMPTY_START..."
-    RESTORE_ON_EMPTY_START=true /entrypoint.sh
+    RESTORE_ON_EMPTY_START=true /start.sh
 
     echo "Verify restore happened..."
     test -f /data/test.txt
