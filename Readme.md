@@ -1,6 +1,6 @@
-# Duplicity Backup
+# Restic Backup
 
-[![Build Status](https://travis-ci.org/ViViDboarder/docker-duplicity-cron.svg?branch=master)](https://travis-ci.org/ViViDboarder/docker-duplicity-cron)
+[![Build Status](https://travis-ci.org/ViViDboarder/docker-restic-cron.svg?branch=master)](https://travis-ci.org/ViViDboarder/docker-restic-cron)
 
 ## Instructions
 Mount any directories you'd like to back up as a volume and run
@@ -11,7 +11,7 @@ Mount any directories you'd like to back up as a volume and run
 |AWS_ACCESS_KEY_ID| |Required for writing to S3|
 |AWS_DEFAULT_REGION| |Required for writing to S3|
 |AWS_SECRET_ACCESS_KEY| |Required for writing to S3|
-|BACKUP_DEST|file:///backups|Destination to store backups (See [duplicity documenation](http://duplicity.nongnu.org/duplicity.1.html#sect7))|
+|BACKUP_DEST|/backups|Destination to store backups (See [duplicity documenation](http://duplicity.nongnu.org/duplicity.1.html#sect7))|
 |BACKUP_NAME|backup|What the name for the backup should be. If using a single store for multiple backups, make sure this is unique|
 |CLEANUP_COMMAND| |An optional duplicity command to execute after backups to clean older ones out (eg. "remove-all-but-n-full 2")|
 |CRON_SCHEDULE| |If you want to periodic incremental backups on a schedule, provide it here. By default we just backup once and exit|
@@ -25,11 +25,6 @@ Mount any directories you'd like to back up as a volume and run
 |RESTORE_ON_EMPTY_START| |Set this to "true" and if the `$PATH_TO_BACKUP` is empty, it will restore the latest backup. This can be used for auto recovery from lost data|
 |SKIP_ON_START| |Skips backup on start if set to "true"|
 |VERIFY_CRON_SCHEDULE| |If you want to verify your backups on a schedule, provide it here|
-
-## Encryption
-By default Duplicity will use a symettric encryption using just your passphrase. If you wish to use a GPG key, you can add a ro mount to your `~/.gnupg` directory and then provide the `GPG_KEY_ID` as an environment variable. The key will be used to sign and encrypt your files before sending to the backup destination.
-
-Need to generate a key? Install `gnupg` and run `gnupg --gen-key`
 
 ## Tips
 

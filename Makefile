@@ -1,4 +1,4 @@
-DOCKER_TAG ?= docker-duplicity-cron
+DOCKER_TAG ?= docker-restic-cron
 
 .PHONY: default
 default: build-x86

@@ -11,14 +11,12 @@ if [ "$OPT_ARGUMENTS" == "" ]; then
     export OPT_ARGUMENTS="$@"
 fi
 
-# If key id is provied add arg
-if [ -e "$GPG_KEY_ID" ]; then
-    export OPT_ARGUMENTS="$OPT_ARGUMENTS --encrypt-sign-key=\"$GPG_KEY_ID\""
-fi
+# Init the repo
+restic -r $BACKUP_DEST snapshots || restic -r $BACKUP_DEST init
 
 # If set to restore on start, restore if the data volume is empty
 if [ "$RESTORE_ON_EMPTY_START" == "true" -a -z "$(ls -A $PATH_TO_BACKUP)" ]; then
-    /restore.sh
+    /restore.sh latest
 fi
 
 # Unless explicitly skipping, take a backup on startup
@@ -39,11 +37,6 @@ if [ -n "$CRON_SCHEDULE" ]; then
     echo "$CRON_SCHEDULE source /env.sh && /backup.sh 2>> /cron.log" >> /crontab.conf
     echo "Backups scheduled as $CRON_SCHEDULE"
 
-    if [ -n "$FULL_CRON_SCHEDULE" ]; then
-        echo "$FULL_CRON_SCHEDULE source /env.sh && /backup.sh full 2>> /cron.log" >> /crontab.conf
-        echo "Full backup scheduled as $VERIFY_CRON_SCHEDULE"
-    fi
-
     if [ -n "$VERIFY_CRON_SCHEDULE" ]; then
         echo "$VERIFY_CRON_SCHEDULE source /env.sh && /verify.sh 2>> /cron.log" >> /crontab.conf
         echo "Verify scheduled as $VERIFY_CRON_SCHEDULE"
@@ -52,9 +45,9 @@ if [ -n "$CRON_SCHEDULE" ]; then
     # Add to crontab
     crontab /crontab.conf
 
-    echo "Starting duplicity cron..."
+    echo "Starting restic cron..."
     cron
 
-    touch /cron.log /root/duplicity.log
-    tail -f /cron.log /root/duplicity.log
+    touch /cron.log
+    tail -f /cron.log
 fi
