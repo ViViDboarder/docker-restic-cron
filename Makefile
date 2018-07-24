@@ -1,4 +1,4 @@
-DOCKER_TAG ?= docker-duplicity-cron
+DOCKER_TAG ?= docker-restic-cron
 
 .PHONY: default
 default: build-x86
@@ -8,18 +8,18 @@ test: test-x86
 
 .PHONY: build-x86
 build-x86:
-	docker build -f ./Dockerfile.ubuntu -t $(DOCKER_TAG):ubuntu .
+	docker build -f ./Dockerfile -t $(DOCKER_TAG) --platform linux .
 
 .PHONY: build-arm
 build-arm:
-	docker build -f ./Dockerfile.raspbian -t $(DOCKER_TAG):raspbian .
+	docker build -f ./Dockerfile -t $(DOCKER_TAG) --platform arm .
 
 .PHONY: build-all
 build-all: build-x86 build-arm
 
 .PHONY: test-x86
 test-x86: build-x86
-	cd tests && ./test.sh $(DOCKER_TAG):ubuntu
+	cd tests && ./test.sh $(DOCKER_TAG)
 
 .PHONY: test-arm
 test-arm: build-arm
@@ -41,7 +41,7 @@ test-s3-all: test-s3-x86 test-s3-arm
 
 .PHONY: shell-x86
 shell-x86: build-x86
-	docker run --rm -it $(DOCKER_TAG):ubuntu bash
+	docker run --rm -it $(DOCKER_TAG) bash
 
 .PHONY: shell-arm
 shell-arm: build-arm

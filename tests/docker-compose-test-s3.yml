@@ -1,17 +1,17 @@
 version: '2'
 services:
-  duplicity:
+  restic:
     build:
       context: ..
-      dockerfile: Dockerfile.${DOCKER_BASE}
+      dockerfile: Dockerfile
     entrypoint: "bash"
-    command: ["/test.sh"]
+    command: "-c 'sleep 2 && /test.sh'"
     hostname: itest
     environment:
       IN_CONTAINER: 'true'
       SKIP_ON_START: 'true'
-      OPT_ARGUMENTS: '--s3-unencrypted-connection'
-      BACKUP_DEST: s3://minio:9000/duplicity
+      RESTIC_PASSWORD: Correct.Horse.Battery.Staple
+      BACKUP_DEST: s3:http://minio:9000/restic
       AWS_DEFAULT_REGION: us-east-1
       AWS_ACCESS_KEY_ID: SUPER_SECRET_ACCESS_KEY
       AWS_SECRET_ACCESS_KEY: SUPER_SECRET_SECRET_KEY
