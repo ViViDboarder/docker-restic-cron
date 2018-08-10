@@ -36,7 +36,6 @@ ENV BACKUP_DEST="file:///backups"
 ENV BACKUP_NAME="backup"
 ENV PATH_TO_BACKUP="/data"
 ENV PASSPHRASE="Correct.Horse.Battery.Staple"
-ENV FLOCK_WAIT=60
 
 # Cron schedules
 ENV CRON_SCHEDULE=""
