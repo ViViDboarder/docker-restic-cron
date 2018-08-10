@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 image=$1
 
@@ -35,6 +36,10 @@ else
     echo "Restore backup..."
     /restore.sh
 
+    echo "Verify restore..."
+    test -f /data/test.txt
+    cat /data/test.txt
+
     echo "Verify backup..."
     /verify.sh
 
@@ -49,10 +54,9 @@ else
 
     echo "Verify restore happened..."
     test -f /data/test.txt
+    cat /data/test.txt
 
     echo "Verify restore with incorrect passphrase fails..."
-    export PASSPHRASE=Incorrect.Mule.Solar.Paperclip
-
     echo "Fail to restore backup..."
-    /restore.sh && exit 1 || echo "OK"
+    PASSPHRASE=Incorrect.Mule.Solar.Paperclip /restore.sh && exit 1 || echo "OK"
 fi
