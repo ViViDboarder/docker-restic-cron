@@ -2,6 +2,6 @@ sudo: required
 services: docker
 
 script:
-  - make build-all
+  - make build-x86
   - make test-x86
   - make test-s3-x86
