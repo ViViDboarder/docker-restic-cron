@@ -1,9 +1,9 @@
 version: '2'
 services:
-  duplicity:
+  restic:
     build:
       context: .
-      dockerfile: Dockerfile.ubuntu
+      dockerfile: Dockerfile
     volumes:
       - ./my-backups:/backups
       - ./my-data:/data:ro

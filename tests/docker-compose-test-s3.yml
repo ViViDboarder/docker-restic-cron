@@ -3,7 +3,7 @@ services:
   restic:
     build:
       context: ..
-      dockerfile: Dockerfile.${DOCKER_BASE}
+      dockerfile: Dockerfile
     entrypoint: "bash"
     command: "-c 'sleep 2 && /test.sh'"
     hostname: itest
