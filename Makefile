@@ -8,11 +8,11 @@ test: test-x86
 
 .PHONY: build-x86
 build-x86:
-	docker build -f ./Dockerfile -t $(DOCKER_TAG) --platform linux .
+	docker build -f ./Dockerfile -t $(DOCKER_TAG) .
 
 .PHONY: build-arm
 build-arm:
-	docker build -f ./Dockerfile -t $(DOCKER_TAG) --platform arm .
+	docker build -f ./Dockerfile -t $(DOCKER_TAG) .
 
 .PHONY: build-all
 build-all: build-x86 build-arm
