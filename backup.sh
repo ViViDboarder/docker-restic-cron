@@ -5,7 +5,7 @@ restic \
     -r $BACKUP_DEST \
     $OPT_ARGUMENTS \
     backup \
-    $PATH_TO_BACKUP
+    "$PATH_TO_BACKUP"
 
 if [ -n "$CLEANUP_COMMAND" ]; then
     restic \

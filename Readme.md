@@ -15,7 +15,6 @@ Mount any directories you'd like to back up as a volume and run
 |BACKUP_DEST|/backups|Destination to store backups (See [restic documenation](https://restic.readthedocs.io/en/latest/030_preparing_a_new_repo.html))|
 |CLEANUP_COMMAND| |Optional restic arguments for `forget` to execute after backups to clean older ones out (eg. "--prune --keep-last 2"). See [forget](https://restic.readthedocs.io/en/latest/060_forget.html)|
 |CRON_SCHEDULE| |If you want to periodic incremental backups on a schedule, provide it here. By default we just backup once and exit|
-|FULL_CRON_SCHEDULE| |If you want to periodic full backups on a schedule, provide it here. This requires an incremental cron schedule too|
 |OPT_ARGUMENTS| |Any additional arguments to provide to the restic command|
 |RESTIC_PASSWORD| |Passphrase to use for encryption|
 |PATH_TO_BACKUP|/data|The path to the directory you wish to backup|
