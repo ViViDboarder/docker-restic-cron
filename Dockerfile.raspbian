@@ -43,6 +43,12 @@ ENV CRON_SCHEDULE=""
 ENV FULL_CRON_SCHEDULE=""
 ENV VERIFY_CRON_SCHEDULE=""
 
+# Create script dirs
+RUN mkdir -p /scripts/backup/before
+RUN mkdir -p /scripts/backup/after
+RUN mkdir -p /scripts/restore/before
+RUN mkdir -p /scripts/restore/after
+
 ADD backup.sh /
 ADD restore.sh /
 ADD start.sh /
