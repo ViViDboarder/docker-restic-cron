@@ -43,6 +43,10 @@ else
     echo "Verify restore..."
     cat /data/test.txt
 
+    echo "Verify restore..."
+    test -f /data/test.txt
+    cat /data/test.txt
+
     echo "Verify backup..."
     /verify.sh
 
@@ -56,6 +60,7 @@ else
     RESTORE_ON_EMPTY_START=true /start.sh
 
     echo "Verify restore happened..."
+    test -f /data/test.txt
     cat /data/test.txt
 
     echo "Verify restore with incorrect passphrase fails..."

@@ -20,10 +20,12 @@ build-all: build-x86 build-arm
 .PHONY: test-x86
 test-x86: build-x86
 	cd tests && ./test.sh $(DOCKER_TAG)
+	cd tests && ./test-pre-scripts.sh $(DOCKER_TAG)
 
 .PHONY: test-arm
 test-arm: build-arm
 	cd tests && .test.sh $(DOCKER_TAG):raspbian
+	cd tests && ./test-pre-scripts.sh $(DOCKER_TAG):raspbian
 
 .PHONY: test-all
 test-all: test-x86 test-arm
