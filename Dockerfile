@@ -1,4 +1,4 @@
-FROM ubuntu:artful
+FROM ubuntu:bionic
 MAINTAINER ViViDboarder <vividboarder@gmail.com>
 
 RUN apt-get update \
