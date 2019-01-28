@@ -22,11 +22,6 @@ test-x86: build-x86
 	cd tests && ./test.sh $(DOCKER_TAG)
 	cd tests && ./test-pre-scripts.sh $(DOCKER_TAG)
 
-.PHONY: test-arm
-test-arm: build-arm
-	cd tests && .test.sh $(DOCKER_TAG):raspbian
-	cd tests && ./test-pre-scripts.sh $(DOCKER_TAG):raspbian
-
 .PHONY: test-all
 test-all: test-x86 test-arm
 
@@ -34,20 +29,12 @@ test-all: test-x86 test-arm
 test-s3-x86:
 	cd tests && ./test-s3.sh ubuntu
 
-.PHONY: test-s3-arm
-test-s3-arm:
-	cd tests && ./test-s3.sh raspbian
-
 .PHONY: test-s3-all
 test-s3-all: test-s3-x86 test-s3-arm
 
 .PHONY: shell-x86
 shell-x86: build-x86
 	docker run --rm -it $(DOCKER_TAG) bash
-
-.PHONY: shell-arm
-shell-arm: build-arm
-	docker run --rm -it $(DOCKER_TAG):raspbian bash
 
 .PHONY: shell
 shell: shell-x86

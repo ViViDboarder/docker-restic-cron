@@ -8,6 +8,7 @@ if [ "$IN_CONTAINER" != "true" ] ; then
     docker run --rm \
         -e IN_CONTAINER=true \
         -e SKIP_ON_START=true \
+        -e RESTIC_PASSWORD="Correct.Horse.Battery.Staple" \
         -v "$(pwd)/test-pre-scripts.sh:/test.sh" \
         -v "$(pwd)/test-pre-scripts:/scripts" \
         $image \
@@ -28,6 +29,9 @@ else
     touch /data/test_database.db
     sqlite3 /data/test_database.db < /scripts/create-test-data.sql
 
+    echo "Fake a start and init repo"
+    CRON_SCHEDULE="" /start.sh
+
     echo "Making backup..."
     /backup.sh
 
@@ -41,7 +45,7 @@ else
     test -f /data/test_database.db && exit 1 || echo "Gone"
 
     echo "Restore backup..."
-    /restore.sh
+    /restore.sh latest
 
     echo "Verify restored files exist..."
     test -f /data/test_database.db
@@ -67,5 +71,5 @@ else
 
     echo "Verify restore with incorrect passphrase fails..."
     echo "Fail to restore backup..."
-    PASSPHRASE=Incorrect.Mule.Solar.Paperclip /restore.sh && exit 1 || echo "OK"
+    RESTIC_PASSWORD=Incorrect.Mule.Solar.Paperclip /restore.sh latest && exit 1 || echo "OK"
 fi
