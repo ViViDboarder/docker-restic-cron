@@ -9,10 +9,7 @@ if [ "$IN_CONTAINER" != "true" ] ; then
         -e IN_CONTAINER=true \
         -e SKIP_ON_START=true \
         -v "$(pwd)/test-pre-scripts.sh:/test.sh" \
-        -v "$(pwd)/scripts/pre-backup.sh:/scripts/backup/before/1.sh" \
-        -v "$(pwd)/scripts/post-backup.sh:/scripts/backup/after/1.sh" \
-        -v "$(pwd)/scripts/pre-restore.sh:/scripts/restore/before/1.sh" \
-        -v "$(pwd)/scripts/post-restore.sh:/scripts/restore/after/1.sh" \
+        -v "$(pwd)/test-pre-scripts:/scripts" \
         $image \
         bash -c "/test.sh"
 else
@@ -22,45 +19,51 @@ else
     type cron
     type crontab
 
+    echo "Install sqlite3"
+    apt-get update
+    apt-get install -y --no-install-recommends sqlite3
+
     echo "Create test data..."
-    mkdir -p /data && echo Test > /data/test.txt
+    mkdir -p /data
+    touch /data/test_database.db
+    sqlite3 /data/test_database.db < /scripts/create-test-data.sql
 
     echo "Making backup..."
     /backup.sh
 
+    echo "Verify intermediary file is gone"
+    test -f /data/test_database.db.bak && exit 1 || echo "Gone"
+
     echo "Delete test data..."
     rm -fr /data/*
-    rm -fr /mydb.txt
 
     echo "Verify deleted..."
-    test -f /data/test.txt && exit 1 || echo "Gone"
-    test -f /mydb.txt && exit 1 || echo "Gone"
+    test -f /data/test_database.db && exit 1 || echo "Gone"
 
     echo "Restore backup..."
     /restore.sh
 
-    echo "Verify pre-post script backups..."
-    test -f /mydb.txt
-    cat /mydb.txt
+    echo "Verify restored files exist..."
+    test -f /data/test_database.db
+    test -f /data/test_database.db.bak && exit 1 || echo "Gone"
+    sqlite3 /data/test_database.db "select data from test_table where id = 1"
 
     echo "Delete test data again..."
     rm -fr /data/*
-    rm -fr /mydb.txt
 
     echo "Verify deleted..."
-    test -f /data/test.txt && exit 1 || echo "Gone"
-    test -f /mydb.txt && exit 1 || echo "Gone"
+    test -f /data/test_database.db && exit 1 || echo "Gone"
 
     echo "Simulate a restart with RESTORE_ON_EMPTY_START..."
     RESTORE_ON_EMPTY_START=true /start.sh
 
     echo "Verify restore happened..."
-    test -f /data/test.txt
-    cat /data/test.txt
+    test -f /data/test_database.db
+    test -f /data/test_database.db.bak && exit 1 || echo "Gone"
+    sqlite3 /data/test_database.db "select data from test_table where id = 1"
 
-    echo "Verify pre-post script backups..."
-    test -f /mydb.txt
-    cat /mydb.txt
+    echo "Delete test data..."
+    rm -fr /data/*
 
     echo "Verify restore with incorrect passphrase fails..."
     echo "Fail to restore backup..."
