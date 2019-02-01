@@ -49,9 +49,13 @@ RUN mkdir -p /scripts/backup/after
 RUN mkdir -p /scripts/restore/before
 RUN mkdir -p /scripts/restore/after
 
-ADD backup.sh /
-ADD restore.sh /
-ADD start.sh /
-ADD verify.sh /
+COPY backup.sh /
+COPY restore.sh /
+COPY start.sh /
+COPY verify.sh /
+COPY healthcheck.sh /
+COPY cron-exec.sh /
+
+HEALTHCHECK CMD /healthcheck.sh
 
 CMD [ "/start.sh" ]

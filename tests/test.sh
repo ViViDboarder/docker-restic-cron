@@ -22,10 +22,10 @@ else
     mkdir -p /data && echo Test > /data/test.txt
 
     echo "Making backup..."
-    /backup.sh
+    /cron-exec.sh /backup.sh
 
     echo "Verify backup..."
-    /verify.sh
+    /cron-exec.sh /verify.sh
 
     echo "Delete test data..."
     rm -fr /data/*
@@ -34,7 +34,8 @@ else
     test -f /data/test.txt && exit 1 || echo "Gone"
 
     echo "Restore backup..."
-    /restore.sh
+    /cron-exec.sh /restore.sh
+    /healthcheck.sh
 
     echo "Verify restore..."
     test -f /data/test.txt
@@ -51,6 +52,7 @@ else
 
     echo "Simulate a restart with RESTORE_ON_EMPTY_START..."
     RESTORE_ON_EMPTY_START=true /start.sh
+    /healthcheck.sh
 
     echo "Verify restore happened..."
     test -f /data/test.txt
@@ -58,5 +60,8 @@ else
 
     echo "Verify restore with incorrect passphrase fails..."
     echo "Fail to restore backup..."
-    PASSPHRASE=Incorrect.Mule.Solar.Paperclip /restore.sh && exit 1 || echo "OK"
+    PASSPHRASE=Incorrect.Mule.Solar.Paperclip /cron-exec.sh /restore.sh && exit 1 || echo "OK"
+
+    echo "Verify failed healthcheck"
+    /healthcheck.sh && exit 1 || echo "OK"
 fi
