@@ -20,9 +20,13 @@ ENV PATH_TO_BACKUP="/data"
 ENV CRON_SCHEDULE=""
 ENV VERIFY_CRON_SCHEDULE=""
 
-ADD backup.sh /
-ADD restore.sh /
-ADD start.sh /
-ADD verify.sh /
+COPY backup.sh /
+COPY restore.sh /
+COPY start.sh /
+COPY verify.sh /
+COPY healthcheck.sh /
+COPY cron-exec.sh /
+
+HEALTHCHECK CMD /healthcheck.sh
 
 CMD [ "/start.sh" ]

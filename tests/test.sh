@@ -26,10 +26,10 @@ else
     CRON_SCHEDULE="" /start.sh
 
     echo "Making backup..."
-    /backup.sh
+    /cron-exec.sh /backup.sh || { cat /cron.log && exit 1; }
 
     echo "Verify backup..."
-    /verify.sh
+    /cron-exec.sh /verify.sh || { cat /cron.log && exit 1; }
 
     echo "Delete test data..."
     rm -fr /data/*
@@ -38,10 +38,8 @@ else
     test -f /data/test.txt && exit 1 || echo "Gone"
 
     echo "Restore backup..."
-    /restore.sh latest
-
-    echo "Verify restore..."
-    cat /data/test.txt
+    /cron-exec.sh /restore.sh latest || { cat /cron.log && exit 1; }
+    /healthcheck.sh
 
     echo "Verify restore..."
     test -f /data/test.txt
@@ -57,7 +55,8 @@ else
     test -f /data/test.txt && exit 1 || echo "Gone"
 
     echo "Simulate a restart with RESTORE_ON_EMPTY_START..."
-    RESTORE_ON_EMPTY_START=true /start.sh
+    RESTORE_ON_EMPTY_START=true /start.sh || { cat /cron.log && exit 1; }
+    /healthcheck.sh || { echo "Failed healthcheck"; cat /cron.log; exit 1; }
 
     echo "Verify restore happened..."
     test -f /data/test.txt
@@ -65,5 +64,8 @@ else
 
     echo "Verify restore with incorrect passphrase fails..."
     echo "Fail to restore backup..."
-    RESTIC_PASSWORD=Incorrect.Mule.Solar.Paperclip /restore.sh latest && exit 1 || echo "OK"
+    RESTIC_PASSWORD=Incorrect.Mule.Solar.Paperclip /cron-exec.sh /restore.sh latest && exit 1 || echo "OK"
+
+    echo "Verify failed healthcheck"
+    /healthcheck.sh && exit 1 || echo "OK"
 fi

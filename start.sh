@@ -16,29 +16,29 @@ restic -r $BACKUP_DEST snapshots || restic -r $BACKUP_DEST init
 
 # If set to restore on start, restore if the data volume is empty
 if [ "$RESTORE_ON_EMPTY_START" == "true" -a -z "$(ls -A $PATH_TO_BACKUP)" ]; then
-    /restore.sh latest
+    /cron-exec.sh /restore.sh latest
 fi
 
 # Unless explicitly skipping, take a backup on startup
 if [ "$SKIP_ON_START" != "true" ]; then
-    /backup.sh
+    /cron-exec.sh /backup.sh
 fi
 
 if [ -n "$CRON_SCHEDULE" ]; then
     # Export the environment to a file so it can be loaded from cron
-    env | sed 's/^\(.*\)=\(.*\)$/export \1="\2"/g' > /env.sh
+    env > /env
     # Remove some vars we don't want to keep
-    sed -i '/\(HOSTNAME\|affinity\|SHLVL\|PWD\)/d' /env.sh
+    sed -i '/\(HOSTNAME\|affinity\|SHLVL\|PWD\)/d' /env
 
     # Use bash for cron
     echo "SHELL=/bin/bash" > /crontab.conf
 
     # Schedule the backups
-    echo "$CRON_SCHEDULE source /env.sh && /backup.sh 2>> /cron.log" >> /crontab.conf
+    echo "$CRON_SCHEDULE /cron-exec.sh /backup.sh" >> /crontab.conf
     echo "Backups scheduled as $CRON_SCHEDULE"
 
     if [ -n "$VERIFY_CRON_SCHEDULE" ]; then
-        echo "$VERIFY_CRON_SCHEDULE source /env.sh && /verify.sh 2>> /cron.log" >> /crontab.conf
+        echo "$VERIFY_CRON_SCHEDULE /cron-exec.sh /verify.sh" >> /crontab.conf
         echo "Verify scheduled as $VERIFY_CRON_SCHEDULE"
     fi
 
