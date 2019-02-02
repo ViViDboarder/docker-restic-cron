@@ -1,4 +1,5 @@
-version: '2'
+version: '3.1'
+
 services:
   restic:
     build:
@@ -8,7 +9,6 @@ services:
       - ./my-backups:/backups
       - ./my-data:/data:ro
     environment:
-      PASSPHRASE: Correct.Horse.Battery.Staple
-      CLEANUP_COMMAND: remove-older-than 5m
+      RESTIC_PASSWORD: Correct.Horse.Battery.Staple Plus
       CRON_SCHEDULE: "* * * * *"
       VERIFY_CRON_SCHEDULE: "* * * * *"
