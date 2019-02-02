@@ -26,9 +26,9 @@ fi
 
 if [ -n "$CRON_SCHEDULE" ]; then
     # Export the environment to a file so it can be loaded from cron
-    env > /env
+    env | sed 's/^\(.*\)=\(.*\)$/export \1="\2"/g' > /env.sh
     # Remove some vars we don't want to keep
-    sed -i '/\(HOSTNAME\|affinity\|SHLVL\|PWD\)/d' /env
+    sed -i '/\(HOSTNAME\|affinity\|SHLVL\|PWD\)/d' /env.sh
 
     # Use bash for cron
     echo "SHELL=/bin/bash" > /crontab.conf
