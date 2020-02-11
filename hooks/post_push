@@ -3,7 +3,17 @@
 # Use manifest-tool to create the manifest, given the experimental
 # "docker manifest" command isn't available yet on Docker Hub.
 
+TAG_ROOT=${DOCKER_TAG%-*}
+TARGET_ARCH=${DOCKER_TAG##*-}
+if [[ "$TARGET_ARCH" == "latest" ]]; then
+    echo "Building a non-arch tag. Skip manifest push"
+    exit 0
+fi
+
 curl -Lo manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.9.0/manifest-tool-linux-amd64
 chmod +x manifest-tool
 
-./manifest-tool push from-spec multi-arch-manifest.yml
+./manifest-tool push from-args \
+    --platforms "linux/$TARGET_ARCH" \
+    --template "$DOCKER_REPO:${TAG_ROOT}-ARCH" \
+    --target "$DOCKER_REPO:${TAG_ROOT}"
