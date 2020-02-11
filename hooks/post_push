@@ -4,10 +4,41 @@
 # "docker manifest" command isn't available yet on Docker Hub.
 
 TAG_ROOT=${DOCKER_TAG%-*}
-TARGET_ARCH=${DOCKER_TAG##*-}
-if [[ "$TARGET_ARCH" == "latest" ]]; then
-    echo "Building a non-arch tag. Skip manifest push"
-    exit 0
+TARGET_ARCH=""
+case "$DOCKER_TAG" in
+    *amd64)
+        TARGET_ARCH="amd64"
+        ;;
+    *arm32v5)
+        TARGET_ARCH="arm32v5"
+        ;;
+    *arm32v6)
+        TARGET_ARCH="arm32v6"
+        ;;
+    *arm32v7)
+        TARGET_ARCH="arm32v7"
+        ;;
+    *arm64v8)
+        TARGET_ARCH="arm64v8"
+        ;;
+    *i386)
+        TARGET_ARCH="i386"
+        ;;
+    *ppc64le)
+        TARGET_ARCH="ppc64le"
+        ;;
+    *s390x)
+        TARGET_ARCH="s390x"
+        ;;
+    *)
+        echo "Unknown target arch, skip manifest push"
+        exit 0
+        ;;
+esac
+
+# If the tag is essentially only the arch, we use latest
+if [[ "$TAG_ROOT" == "$TARGET_ARCH" ]]; then
+    TAG_ROOT="latest"
 fi
 
 curl -Lo manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.9.0/manifest-tool-linux-amd64
@@ -15,5 +46,5 @@ chmod +x manifest-tool
 
 ./manifest-tool push from-args \
     --platforms "linux/$TARGET_ARCH" \
-    --template "$DOCKER_REPO:${TAG_ROOT}-ARCH" \
-    --target "$DOCKER_REPO:${TAG_ROOT}"
+    --template "$DOCKER_REPO:$DOCKER_TAG" \
+    --target "$DOCKER_REPO:$TAG_ROOT"

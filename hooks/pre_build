@@ -1,39 +1,4 @@
 #!/bin/bash
 set -ex
 
-REPO=""
-case "$DOCKER_TAG" in
-    *amd64)
-        REPO="library"
-        ;;
-    *arm32v5)
-        REPO="arm32v5"
-        ;;
-    *arm32v6)
-        REPO="arm32v6"
-        ;;
-    *arm32v7)
-        REPO="arm32v7"
-        ;;
-    *arm64v8)
-        REPO="arm64v8"
-        ;;
-    *i386)
-        REPO="i386"
-        ;;
-    *ppc64le)
-        REPO="ppc64le"
-        ;;
-    *s390x)
-        REPO="s390x"
-        ;;
-    *)
-        REPO="library"
-        ;;
-esac
-
-
-[ "${REPO}" != "library" ] && \
-    { echo 'qemu-user-static: Registration not required for current arch'; exit 0; }
-
 docker run --rm --privileged multiarch/qemu-user-static:register --reset
