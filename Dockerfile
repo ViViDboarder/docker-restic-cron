@@ -1,12 +1,12 @@
 ARG REPO=library
-FROM ${REPO}/ubuntu:bionic
+FROM ${REPO}/ubuntu:focal
 LABEL maintainer="ViViDboarder <vividboarder@gmail.com>"
 
 RUN apt-get update \
         && apt-get install -y --no-install-recommends \
             ca-certificates \
             cron \
-            restic \
+            restic=0.9.6* \
         && apt-get clean \
         && rm -rf /var/apt/lists/*
 
