@@ -8,14 +8,14 @@ fi
 
 # If no env variable set, get from command line
 if [ "$OPT_ARGUMENTS" == "" ]; then
-    export OPT_ARGUMENTS="$@"
+    export OPT_ARGUMENTS="$*"
 fi
 
 # Init the repo
-restic -r $BACKUP_DEST snapshots || restic -r $BACKUP_DEST init
+restic -r "$BACKUP_DEST" snapshots || restic -r "$BACKUP_DEST" init
 
 # If set to restore on start, restore if the data volume is empty
-if [ "$RESTORE_ON_EMPTY_START" == "true" -a -z "$(ls -A $PATH_TO_BACKUP)" ]; then
+if [ "$RESTORE_ON_EMPTY_START" == "true" ] && [ -z "$(ls -A "$PATH_TO_BACKUP")" ]; then
     /cron-exec.sh /restore.sh latest
 fi
 

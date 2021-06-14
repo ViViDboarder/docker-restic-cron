@@ -1,5 +1,8 @@
 DOCKER_TAG ?= docker-restic-cron
 
+.PHONY: all
+all: check test-all
+
 .PHONY: default
 default: build-x86
 
@@ -42,3 +45,11 @@ shell: shell-x86
 .PHONY: clean
 clean:
 	docker-compose -f docker-compose-test-s3.yml down -v
+
+.PHONY: install-hooks
+install-hooks:
+	pre-commit install
+
+.PHONY: check
+check:
+	pre-commit run --all-files

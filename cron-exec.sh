@@ -4,8 +4,15 @@ ENV=/env.sh
 LOG=/cron.log
 HEALTH_FILE=/unhealthy
 
-touch $ENV
-source $ENV
+if [ -f "$ENV" ]; then
+    # shellcheck disable=SC1090
+    source "$ENV"
+fi
 
 # Execute command and write output to log
-$@ 2>> $LOG && rm -f $HEALTH_FILE || { touch $HEALTH_FILE; exit 1; }
+if eval "$@" 2>> "$LOG"; then
+    rm -f "$HEALTH_FILE"
+else
+    touch "$HEALTH_FILE"
+    exit 1;
+fi

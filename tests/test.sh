@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-image=$1
+image="$1"
 
 if [ "$IN_CONTAINER" != "true" ] ; then
     # Run the test script within the container
@@ -10,7 +10,7 @@ if [ "$IN_CONTAINER" != "true" ] ; then
         -e SKIP_ON_START=true \
         -e RESTIC_PASSWORD="Correct.Horse.Battery.Staple" \
         -v "$(pwd)/test.sh:/test.sh" \
-        $image \
+        "$image" \
         bash -c "/test.sh"
 else
     echo "Performing backup tests"
@@ -30,6 +30,9 @@ else
 
     echo "Verify backup..."
     /cron-exec.sh /verify.sh || { cat /cron.log && exit 1; }
+
+    echo "Auto cleanup on second backup..."
+    CLEANUP_COMMAND="--prune --keep-last 1" /cron-exec.sh /backup.sh || { cat /cron.log && exit 1; }
 
     echo "Delete test data..."
     rm -fr /data/*
