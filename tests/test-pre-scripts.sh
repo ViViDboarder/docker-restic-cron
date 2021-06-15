@@ -10,19 +10,20 @@ if [ "$IN_CONTAINER" != "true" ] ; then
         -e SKIP_ON_START=true \
         -e RESTIC_PASSWORD="Correct.Horse.Battery.Staple" \
         -v "$(pwd)/test-pre-scripts.sh:/test.sh" \
-        -v "$(pwd)/test-pre-scripts:/scripts" \
+        -v "$(pwd)/test-pre-scripts/backup:/scripts/backup" \
+        -v "$(pwd)/test-pre-scripts/restore:/scripts/restore" \
+        -v "$(pwd)/test-pre-scripts/create-test-data.sql:/scripts/create-test-data.sql" \
         "$image" \
         bash -c "/test.sh"
 else
     echo "Performing backup tests"
 
     echo "Verify cron and crontab exist"
-    type cron
+    type crond
     type crontab
 
     echo "Install sqlite3"
-    apt-get update
-    apt-get install -y --no-install-recommends sqlite3
+    apk add sqlite
 
     echo "Create test data..."
     mkdir -p /data
@@ -30,10 +31,10 @@ else
     sqlite3 /data/test_database.db < /scripts/create-test-data.sql
 
     echo "Fake a start and init repo"
-    CRON_SCHEDULE="" /start.sh
+    CRON_SCHEDULE="" /scripts/start.sh
 
     echo "Making backup..."
-    /backup.sh
+    /scripts/backup.sh
 
     echo "Verify intermediary file is gone"
     test -f /data/test_database.db.bak && exit 1 || echo "Gone"
@@ -45,7 +46,7 @@ else
     test -f /data/test_database.db && exit 1 || echo "Gone"
 
     echo "Restore backup..."
-    /restore.sh latest
+    /scripts/restore.sh latest
 
     echo "Verify restored files exist..."
     test -f /data/test_database.db
@@ -59,7 +60,7 @@ else
     test -f /data/test_database.db && exit 1 || echo "Gone"
 
     echo "Simulate a restart with RESTORE_ON_EMPTY_START..."
-    RESTORE_ON_EMPTY_START=true /start.sh
+    RESTORE_ON_EMPTY_START=true /scripts/start.sh
 
     echo "Verify restore happened..."
     test -f /data/test_database.db
@@ -71,5 +72,5 @@ else
 
     echo "Verify restore with incorrect passphrase fails..."
     echo "Fail to restore backup..."
-    RESTIC_PASSWORD=Incorrect.Mule.Solar.Paperclip /restore.sh latest && exit 1 || echo "OK"
+    RESTIC_PASSWORD=Incorrect.Mule.Solar.Paperclip /scripts/restore.sh latest && exit 1 || echo "OK"
 fi

@@ -1,4 +1,4 @@
-DOCKER_TAG ?= docker-restic-cron
+DOCKER_TAG ?= docker-restic-cron-$(USER)
 
 .PHONY: all
 all: check test-all
@@ -15,7 +15,7 @@ build-x86:
 
 .PHONY: build-arm
 build-arm:
-	docker build --build-arg REPO=arm32v7 -f ./Dockerfile -t $(DOCKER_TAG)-arm32v7 .
+	docker build --build-arg REPO=arm32v7 --build-arg ARCH=arm -f ./Dockerfile -t $(DOCKER_TAG)-arm .
 
 .PHONY: build-all
 build-all: build-x86 build-arm
@@ -25,15 +25,17 @@ test-x86: build-x86
 	cd tests && ./test.sh $(DOCKER_TAG)
 	cd tests && ./test-pre-scripts.sh $(DOCKER_TAG)
 
+.PHONY: test-arm
+test-arm: build-arm
+	cd tests && ./test.sh $(DOCKER_TAG)-arm
+	cd tests && ./test-pre-scripts.sh $(DOCKER_TAG)-arm
+
 .PHONY: test-all
 test-all: test-x86 test-arm
 
 .PHONY: test-s3-x86
 test-s3-x86:
-	cd tests && ./test-s3.sh ubuntu
-
-.PHONY: test-s3-all
-test-s3-all: test-s3-x86 test-s3-arm
+	cd tests && ./test-s3.sh
 
 .PHONY: shell-x86
 shell-x86: build-x86
@@ -44,7 +46,9 @@ shell: shell-x86
 
 .PHONY: clean
 clean:
-	docker-compose -f docker-compose-test-s3.yml down -v
+	docker-compose -f ./tests/docker-compose-test-s3.yml down -v
+	rm -fr my-backups/
+	rm -fr my-data/
 
 .PHONY: install-hooks
 install-hooks:

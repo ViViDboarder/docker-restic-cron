@@ -1,33 +1,30 @@
 ARG REPO=library
-FROM ${REPO}/ubuntu:focal
+FROM ${REPO}/alpine:3.12
 LABEL maintainer="ViViDboarder <vividboarder@gmail.com>"
 
-RUN apt-get update \
-        && apt-get install -y --no-install-recommends \
-            ca-certificates \
-            cron \
-            restic=0.9.6* \
-        && apt-get clean \
-        && rm -rf /var/apt/lists/*
+RUN apk add --no-cache curl=~7 bash=~5
 
-VOLUME /root/.cache/restic
-VOLUME /backups
+ARG ARCH=amd64
 
+ARG RCLONE_VERSION=v1.55.1
+
+COPY ./scripts/install_rclone.sh /scripts/
+RUN /scripts/install_rclone.sh "$RCLONE_VERSION" "$ARCH"
+
+ARG RESTIC_VERSION=0.12.0
+
+COPY ./scripts/install_restic.sh /scripts/
+RUN /scripts/install_restic.sh "$RESTIC_VERSION" "$ARCH"
+
+# Set some default environment variables
 ENV BACKUP_DEST="/backups"
 ENV BACKUP_NAME="backup"
 ENV PATH_TO_BACKUP="/data"
-
-# Cron schedules
 ENV CRON_SCHEDULE=""
 ENV VERIFY_CRON_SCHEDULE=""
 
-COPY backup.sh /
-COPY restore.sh /
-COPY start.sh /
-COPY verify.sh /
-COPY healthcheck.sh /
-COPY cron-exec.sh /
+COPY ./scripts /scripts
 
-HEALTHCHECK CMD /healthcheck.sh
+HEALTHCHECK CMD /scripts/healthcheck.sh
 
-CMD [ "/start.sh" ]
+CMD [ "/scripts/start.sh" ]

@@ -16,12 +16,12 @@ restic -r "$BACKUP_DEST" snapshots || restic -r "$BACKUP_DEST" init
 
 # If set to restore on start, restore if the data volume is empty
 if [ "$RESTORE_ON_EMPTY_START" == "true" ] && [ -z "$(ls -A "$PATH_TO_BACKUP")" ]; then
-    /cron-exec.sh /restore.sh latest
+    /scripts/cron-exec.sh /scripts/restore.sh latest
 fi
 
 # Unless explicitly skipping, take a backup on startup
 if [ "$SKIP_ON_START" != "true" ]; then
-    /cron-exec.sh /backup.sh
+    /scripts/cron-exec.sh /scripts/backup.sh
 fi
 
 if [ -n "$CRON_SCHEDULE" ]; then
@@ -45,8 +45,11 @@ if [ -n "$CRON_SCHEDULE" ]; then
     # Add to crontab
     crontab /crontab.conf
 
-    echo "Starting restic cron..."
-    cron
+    # List crontabs
+    crontab -l
+
+    echo "Starting cron..."
+    crond
 
     touch /cron.log
     tail -f /cron.log
