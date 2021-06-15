@@ -34,11 +34,11 @@ if [ -n "$CRON_SCHEDULE" ]; then
     echo "SHELL=/bin/bash" > /crontab.conf
 
     # Schedule the backups
-    echo "$CRON_SCHEDULE /cron-exec.sh /backup.sh" >> /crontab.conf
+    echo "$CRON_SCHEDULE /scripts/cron-exec.sh /scripts/backup.sh" >> /crontab.conf
     echo "Backups scheduled as $CRON_SCHEDULE"
 
     if [ -n "$VERIFY_CRON_SCHEDULE" ]; then
-        echo "$VERIFY_CRON_SCHEDULE /cron-exec.sh /verify.sh" >> /crontab.conf
+        echo "$VERIFY_CRON_SCHEDULE /scripts/cron-exec.sh /scripts/verify.sh" >> /crontab.conf
         echo "Verify scheduled as $VERIFY_CRON_SCHEDULE"
     fi
 
