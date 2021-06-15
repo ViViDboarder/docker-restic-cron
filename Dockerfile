@@ -26,4 +26,6 @@ COPY ./scripts /scripts
 
 HEALTHCHECK CMD /scripts/healthcheck.sh
 
+VOLUME /root/.config
+
 CMD [ "/scripts/start.sh" ]
