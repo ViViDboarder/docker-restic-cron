@@ -33,5 +33,8 @@ Mount all volumes from your existing container with `--volumes-from` and then ba
 ### Restoring a backup
 On your running container, execute `/restore.sh`. That should be that! Eg. `docker exec my_backup_container /restore.sh`
 
-### To Do
- - [ ] Automatic restoration if there is no source data
+### Backup to any rclone destination
+This image also contains [rclone](https://rclone.org). This allows you to target any destination supported by rclone. Check out the [official documentation](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#other-services-via-rclone) to see how to configure this.
+
+### Pre/post backup/restore scripts
+Before and after any backup or restore, scripts located in `/scripts/{backup,restore}/{before,after}/` will be executed. This can be used to do things like snapshotting a database before backing it up and restoring the contents.
