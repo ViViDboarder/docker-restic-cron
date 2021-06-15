@@ -15,7 +15,7 @@ build-x86:
 
 .PHONY: build-arm
 build-arm:
-	docker build --build-arg REPO=arm32v7 --build-arg ARCH=arm -f ./Dockerfile -t $(DOCKER_TAG)-arm .
+	docker build --build-arg REPO=arm32v7 --build-arg TARGETARCH=arm -f ./Dockerfile -t $(DOCKER_TAG)-arm .
 
 .PHONY: build-all
 build-all: build-x86 build-arm
