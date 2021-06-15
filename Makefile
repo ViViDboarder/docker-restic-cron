@@ -11,7 +11,7 @@ test: test-x86
 
 .PHONY: build-x86
 build-x86:
-	docker build -f ./Dockerfile -t $(DOCKER_TAG) .
+	docker build --build-arg TARGETARCH=amd64 -f ./Dockerfile -t $(DOCKER_TAG) .
 
 .PHONY: build-arm
 build-arm:
@@ -35,7 +35,7 @@ test-all: test-x86 test-arm
 
 .PHONY: test-s3-x86
 test-s3-x86:
-	cd tests && ./test-s3.sh
+	cd tests && env TARGETARCH=amd64 ./test-s3.sh
 
 .PHONY: shell-x86
 shell-x86: build-x86

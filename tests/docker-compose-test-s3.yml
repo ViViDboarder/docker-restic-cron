@@ -1,9 +1,12 @@
+---
 version: '2'
 services:
   restic:
     build:
       context: ..
       dockerfile: Dockerfile
+      args:
+        - TARGETARCH
     entrypoint: "bash"
     command: "-c 'sleep 2 && /test.sh'"
     hostname: itest
