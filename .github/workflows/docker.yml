@@ -30,6 +30,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: vividboarder/docker-restic-cron
+          flavor: |
+            latest=auto
           tags: |
             type=ref,event=branch
             type=ref,event=pr
