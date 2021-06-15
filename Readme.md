@@ -36,5 +36,7 @@ On your running container, execute `/restore.sh`. That should be that! Eg. `dock
 ### Backup to any rclone destination
 This image also contains [rclone](https://rclone.org). This allows you to target any destination supported by rclone. Check out the [official documentation](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#other-services-via-rclone) to see how to configure this.
 
+Rather than having to use an exec shell inside the container, I recommend configuring via the backup destination. For example: `rclone::ftp,env_auth:/test-restic` and then passing all config values via the environment.
+
 ### Pre/post backup/restore scripts
 Before and after any backup or restore, scripts located in `/scripts/{backup,restore}/{before,after}/` will be executed. This can be used to do things like snapshotting a database before backing it up and restoring the contents.
