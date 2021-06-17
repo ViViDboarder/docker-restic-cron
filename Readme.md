@@ -31,7 +31,7 @@ Hostname is used for identifying what you are backing up. You may want to specif
 Mount all volumes from your existing container with `--volumes-from` and then back up by providing the paths to those volumes. If there are more than one volumes, you'll want to use the above tip for mulitple backup sources
 
 ### Restoring a backup
-On your running container, execute `/restore.sh`. That should be that! Eg. `docker exec my_backup_container /restore.sh`
+On your running container, execute `/scripts/restore.sh`. That should be that! Eg. `docker exec my_backup_container /scripts/restore.sh`
 
 ### Backup to any rclone destination
 This image also contains [rclone](https://rclone.org). This allows you to target any destination supported by rclone. Check out the [official documentation](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#other-services-via-rclone) to see how to configure this.
