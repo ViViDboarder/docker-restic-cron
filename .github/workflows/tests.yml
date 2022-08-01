@@ -22,7 +22,7 @@ jobs:
         run: make test-s3-x86
 
       - name: Setup python
-        uses: actions/setup-python@v2.2.2
+        uses: actions/setup-python@v4.1.0
 
       - name: Run pre-commit hooks
         run: |
