@@ -1,6 +1,7 @@
 # Restic Backup
 
-[![Build Status](https://travis-ci.org/ViViDboarder/docker-restic-cron.svg?branch=master)](https://travis-ci.org/ViViDboarder/docker-restic-cron)
+## Archived
+I've moved on to using [Restic Scheduler](https://git.iamthefij.com/iamthefij/restic-scheduler)
 
 ## Instructions
 Mount any directories you'd like to back up as a volume and run
